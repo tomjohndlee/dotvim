@@ -1,4 +1,7 @@
-" Houcheng Lee's .vimrc (03/29/2011)
+" Houcheng Lee's .vimrc (03/31/2011)
+" enable pathogen.vim
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
 
 set nocompatible		" use VIM not vi setting
 
