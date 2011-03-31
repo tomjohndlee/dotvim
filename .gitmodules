@@ -16,3 +16,6 @@
 [submodule "bundle/cscope_macros"]
 	path = bundle/cscope_macros
 	url = https://github.com/vim-scripts/cscope_macros.vim.git
+[submodule "bundle/xmledit"]
+	path = bundle/xmledit
+	url = https://github.com/sukima/xmledit.git
