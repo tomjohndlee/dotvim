@@ -1,26 +1,44 @@
-" Houcheng Lee's .vimrc (03/31/2011)
-" enable pathogen.vim
+" Houcheng Lee's .vimrc (04/02/2011)
+
+" enable pathogen.vim to load vim scripts in bundle/
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
-set nocompatible		" use VIM not vi setting
 
-" fix backspace key won't move from current line
-set backspace=indent,eol,start
-
-set autoindent			" always set autoindenting on
+"
+" Section: VIM Settings
+"
 set nobackup
+set nocompatible		" use VIM not vi setting
+set autoindent			" always set autoindenting on
 set history=50			" keep 50 lines of command line history
 set ruler				" show the cursor position all the time
 set showcmd				" display incomplete commands
 set incsearch			" do incremental searching
+set hlsearch			" highlighting search 
 set vb t_vb=			" set no visual bell and disable screen flash
+set noerrorbells		" set no error bells
+set novisualbell		" set no visual bell
 set autowrite			" automatically save changes when jumping from file to file
+set autoread			" automatically read changes when it's changed from outside
+set copyindent			" copy the previous indentation on autoindenting
+set ignorecase			" ignore case when searching
+set smartcase			" ignore case if search pattern is all lowercase,case-sensitive otherwise
+set backspace=indent,eol,start " fix backspace key won't move from current line
 
+let mapleader = ","		"set leader to , instead of default \
+let g:mapleader = "," 
+
+filetype plugin indent on  " enable filetype-specific detection, indenting, and plugins
+autocmd! bufwritepost .vimrc source ~/.vimrc " auto reload vimrc when editing it
+
+
+"
+" Section: Key Mapping
+"
 map! ii <esc>							" map ii to Esc
 map <F6> :let &hlsearch=!&hlsearch<CR>	" Turn hlsearch on or off by <F6>
 map ,e :update<CR>:e#<CR>               " toggle between % and # files, update only save when buffer changes
-"nnoremap <CR> o<esc>                    " insert blank lines without being into insert mode (such as o), cause quickfix Enter jump failed
 
 " set ctrl+s to save file
 " ctrl+s, and ctrl+q are flow-control characters, 
@@ -29,61 +47,110 @@ noremap <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
 inoremap <C-S> <C-O>:update<CR>
 
-"
-" grep, find
-"
+" replace the current word in all opened buffers
+map <leader>r :call Replace()<CR>
+
 " grep current cursor word in ONLY .c, .h, .cc or .cpp file
 nnoremap ,g :grep -nr <C-R><C-W> `find . -name "*.[ch]" -o -name "*.cc" -o -name "*.cpp"`<CR> 
 command! -nargs=1 Grep :call Grep("<args>") 
 command! -nargs=* Find :call Find(<f-args>)
-"
+
 " ctags
-"
 nmap ,t :!(cd %:p:h;ctags *.[ch])&		" rebuild the tag file in the directory of the current source file
-set tags=./tags,tags,~/rohc/rohc/tags	" set the sequence of what tags file to use
+set tags=./tags,tags					" set the sequence of what tags file to use
 set cscopequickfix=s-,c-,d-,i-,t-,e-	" show the Cscope result into the quickfix window
-"
-" Windows operations
-"
-" and map some key to maximize the left or right working windows, and up or
-" down working windows.
+
+" Windows operations  :help window-resize
 set winminheight=0
 set winminwidth=0
-map <C-J> <C-W>j<C-W>_
+map <C-J> <C-W>j<C-W>_		" maximize the down, up, left or right window
 map <C-K> <C-W>k<C-W>_
 map <C-H> <C-W>h<C-W><bar>
 map <C-L> <C-W>l<C-W><bar>
-map ,w <C-W><C-W>			",w toggle between vertical or horizonal windows
-map ,h <C-W>h
+map ,h <C-W>h				" move to the left, right, up or down window
 map ,l <C-W>l
 map ,k <C-W>k
 map ,j <C-W>j
+map ,w <C-W><C-W>			" ,w toggle between vertical or horizonal windows
+
+" tab
+map <C-t><C-t> :tabnew<CR>
+map <C-t><C-w> :tabclose<CR> 
+
+" ,/ turn off search highlighting
+nmap <leader>/ :nohl<CR>
+
+" ,p toggles paste mode
+nmap <leader>p :set paste!<BAR>set paste?<CR>
+
+" allow multiple indentation/deindentation in visual mode
+vnoremap < <gv
+vnoremap > >gv
+
+" open Quickfix console
+map <leader>cc :botright copen<CR> 
+map <leader>] :cn<CR>		" move to next error
+map <leader>[ :cp<CR>		" move to the prev error
+
+" Ctrl-[ jump out of the tag stack (undo Ctrl-])
+map <C-[> <ESC>:po<CR>
+
+" ,g generates the header guard
+map <leader>g :call IncludeGuard()<CR>
+
 
 "
 " Section: Plugin Setting
 "
 " YankRing.vim - display a buffer displaying the yankring's contents
 nnoremap <silent> <F4> :YRShow<CR>
+
 " NERD_commenter.vim (change the <leader> from default \ to ,)
-let mapleader = "," 
+
 " taglist.vim
 let Tlist_WinWidth = 25
 nnoremap <silent> <F8> :Tlist<CR>
+
 " NERD_tree.vim 
 nmap <leader>t :NERDTreeToggle<CR>	" key binding ,t for NERD Tree toggle
+
+" The following is from Vgod's
+" vim-latex - many latex shortcuts and snippets {
+" IMPORTANT: win32 users will need to have 'shellslash' set so that latex
+" can be called correctly.
+set shellslash
+set grepprg=grep\ -nH\ $*
+" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
+" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+" The following changes the default filetype back to 'tex':
+let g:tex_flavor='latex'
+
+"}
+
+" AutoClose - Inserts matching bracket, paren, brace or quote 
+" fixed the arrow key problems caused by AutoClose
+if !has("gui_running")	
+   set term=linux
+   imap OA <ESC>ki
+   imap OB <ESC>ji
+   imap OC <ESC>li
+   imap OD <ESC>hi
+
+   nmap OA k
+   nmap OB j
+   nmap OC l
+   nmap OD h
+endif
+
+" SuperTab
+let g:SuperTabDefaultCompletionType = "context"
+
+
 "
 " Section: File Syntax
 "
-au BufRead,BufNewFile *.pc set filetype=c	"*.pc file use c syntax file
-hi Search ctermfg=0 ctermbg=2				"change the default hi-light color
-" When editing a file, always jump to the last cursor position
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-"autocmd BufReadPost *
-      "\ if ! exists("g:leave_my_cursor_position_alone") |
-      "\     if line("'\"") > 0 && line ("'\"") <= line("$") |
-      "\         exe "normal g'\"" |
-      "\     endif |
-      "\ endif
+syntax on
+au BufRead,BufNewFile *.pc set filetype=c	" *.pc file use c syntax file
 
 
 "
@@ -99,25 +166,9 @@ highlight SpellRare term=underline cterm=underline
 highlight clear SpellLocal
 highlight SpellLocal term=underline cterm=underline
 
-"
-" Section: Conditional Setting
-"
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
-endif
-
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
-  filetype plugin indent on
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-endif " has("autocmd")
 
 "
-" Section: functions
+" Section: Functions
 "
 " Usage: :Grep [pattern], use grep search recursively and execlude .svn
 function! Grep(name)
@@ -179,9 +230,26 @@ function! Find(...)
   endif
 endfunction
 
+"--------------------------------------------------------------------------- 
+" Tip #382: Search for <cword> and replace with input() in all open buffers 
+"--------------------------------------------------------------------------- 
+fun! Replace() 
+    let s:word = input("Replace " . expand('<cword>') . " with:") 
+    :exe 'bufdo! %s/\<' . expand('<cword>') . '\>/' . s:word . '/ge' 
+    :unlet! s:word 
+endfun 
+
+fun! IncludeGuard()
+   let basename = substitute(bufname(""), '.*/', '', '')
+   let guard = '_' . substitute(toupper(basename), '\.', '_', "H")
+   call append(0, "#ifndef " . guard)
+   call append(1, "#define " . guard)
+   call append( line("$"), "#endif // for #ifndef " . guard)
+endfun
+
 
 "
-" Tab Setting
+" Section: Tab Setting
 "
 " Cause the program to indent to 4 spaces but actually is ^I,tab.
 " cindent will see tabstop value, so I have to set it to 4
@@ -202,7 +270,121 @@ au FileType make setlocal noexpandtab
 
 
 "
-" Section: memo
+" Section: Vgod's settings
+"
+set clipboard=unnamed	" yank to the system register (*) by default
+set showmatch			" Cursor shows matching ) and }
+set showmode			" Show current mode
+set wildchar=<TAB>		" start wild expansion in the command line using <TAB>
+set wildmenu            " wild char completion menu
+
+" ignore these files while expanding wild chars
+set wildignore=*.o,*.class,*.pyc
+
+" status line {
+set laststatus=2
+set statusline=\ %{HasPaste()}%<%-15.25(%f%)%m%r%h\ %w\ \ 
+set statusline+=\ \ \ [%{&ff}/%Y] 
+set statusline+=\ \ \ %<%20.30(%{hostname()}:%{CurDir()}%)\ 
+set statusline+=%=%-10.(%l,%c%V%)\ %p%%/%L
+
+function! CurDir()
+    let curdir = substitute(getcwd(), $HOME, "~", "")
+    return curdir
+endfunction
+
+function! HasPaste()
+    if &paste
+        return '[PASTE]'
+    else
+        return ''
+    endif
+endfunction
+
+"}
+
+"Restore cursor to file position in previous editing session
+set viminfo='10,\"100,:20,%,n~/.viminfo
+au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+
+" Enable omni completion. (Ctrl-X Ctrl-O)
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd FileType java set omnifunc=javacomplete#Complete
+
+" use syntax complete if nothing else available
+if has("autocmd") && exists("+omnifunc")
+  autocmd Filetype *
+              \	if &omnifunc == "" |
+              \		setlocal omnifunc=syntaxcomplete#Complete |
+              \	endif
+endif
+
+" make CSS omnicompletion work for SASS and SCSS
+autocmd BufNewFile,BufRead *.scss             set ft=scss.css
+autocmd BufNewFile,BufRead *.sass             set ft=sass.css
+
+"--------------------------------------------------------------------------- 
+" ENCODING SETTINGS
+"--------------------------------------------------------------------------- 
+set encoding=utf-8                                  
+set termencoding=utf-8
+set fileencoding=utf-8
+set fileencodings=ucs-bom,utf-8,big5,latin1
+
+fun! ViewUTF8()
+	set encoding=utf-8                                  
+	set termencoding=big5
+endfun
+
+fun! UTF8()
+	set encoding=utf-8                                  
+	set termencoding=big5
+	set fileencoding=utf-8
+	set fileencodings=ucs-bom,big5,utf-8,latin1
+endfun
+
+fun! Big5()
+	set encoding=big5
+	set fileencoding=big5
+endfun
+
+
+" Bash like keys for the command line
+"cnoremap <C-A>      <Home>
+"cnoremap <C-E>      <End>
+"cnoremap <C-K>      <C-U>
+
+" :cd. change working directory to that of the current file
+"cmap cd. lcd %:p:h
+
+" Writing Restructured Text (Sphinx Documentation) {
+   " Ctrl-u 1:    underline Parts w/ #'s
+"   noremap  <C-u>1 yyPVr#yyjp
+"   inoremap <C-u>1 <esc>yyPVr#yyjpA
+   " Ctrl-u 2:    underline Chapters w/ *'s
+"   noremap  <C-u>2 yyPVr*yyjp
+"   inoremap <C-u>2 <esc>yyPVr*yyjpA
+   " Ctrl-u 3:    underline Section Level 1 w/ ='s
+"   noremap  <C-u>3 yypVr=
+"   inoremap <C-u>3 <esc>yypVr=A
+   " Ctrl-u 4:    underline Section Level 2 w/ -'s
+"   noremap  <C-u>4 yypVr-
+"   inoremap <C-u>4 <esc>yypVr-A
+   " Ctrl-u 5:    underline Section Level 3 w/ ^'s
+"   noremap  <C-u>5 yypVr^
+"   inoremap <C-u>5 <esc>yypVr^A
+"}
+" C/C++ specific settings
+"autocmd FileType c,cpp,cc  set cindent comments=sr:/*,mb:*,el:*/,:// cino=>s,e0,n0,f0,{0,}0,^-1s,:0,=s,g0,h1s,p2,t0,+2,(2,)20,*30
+
+
+"
+" Section: Memo
 "
 " 1. Use 'set list' to show the hidden character.<Tab>=^I, '\n'=$.
 "
@@ -214,18 +396,13 @@ au FileType make setlocal noexpandtab
 "    you push <Tab> key. But if you push <Tab> 3 times continuely, you will 
 "    get ^I and 1 space instead of 9 spaces.
 "
-" 4. default <leader> is \, so <leader>w is \w
-"    e.g. map <leader>w <C-W><C-W>
-"
-" 5. highlight the line where cursor is in,
-"    Use HiCurLine.vim plugin. \hcli to turn on, \hcls to stop
-"
-" 6. set expandtab
+" 4. set expandtab
 "    Let all new insert tab become 4 spaces, no matter what condition.
 "    Set 'expandtab on' will not affect the previous enter <Tab>
 "    This would be horrible if you want to use really <Tab>.
 "    If you want to enter a real tab character, use Ctrl-V<Tab> key sequence.
 "    You can find some reference in Tip#12 in www.vim.org
+
 
 "
 " Section: Backup
@@ -250,6 +427,8 @@ au FileType make setlocal noexpandtab
 
 "set nowrap				" do no wrap line
 
+"set smarttab		" insert tabs on the start of a line according to context
+"
 " When editing a file, always jump to the last cursor position
 "autocmd BufReadPost *
       "\ if ! exists("g:leave_my_cursor_position_alone") |
@@ -257,3 +436,4 @@ au FileType make setlocal noexpandtab
       "\         exe "normal g'\"" |
       "\     endif |
       "\ endif
+
