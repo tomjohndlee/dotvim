@@ -37,7 +37,7 @@ autocmd! bufwritepost .vimrc source ~/.vimrc " auto reload vimrc when editing it
 " Section: Key Mapping
 "
 map! ii <esc>							" map ii to Esc
-map ,e :update<CR>:e#<CR>               " toggle between % and # files, update only save when buffer changes
+map <leader>e :update<CR>:e#<CR>               " toggle between % and # files, update only save when buffer changes
 
 " set ctrl+s to save file
 " ctrl+s, and ctrl+q are flow-control characters, 
@@ -50,12 +50,16 @@ inoremap <C-S> <C-O>:update<CR>
 map <leader>r :call Replace()<CR>
 
 " grep current cursor word in ONLY .c, .h, .cc or .cpp file
-nnoremap ,g :grep -nr <C-R><C-W> `find . -name "*.[ch]" -o -name "*.cc" -o -name "*.cpp"`<CR> 
+nnoremap <leader>g :grep -nr <C-R><C-W> `find . -name "*.[ch]" -o -name "*.cc" -o -name "*.cpp"`<CR> 
 command! -nargs=1 Grep :call Grep("<args>") 
 command! -nargs=* Find :call Find(<f-args>)
 
 " ctags
-nmap ,t :!(cd %:p:h;ctags *.[ch])&		" rebuild the tag file in the directory of the current source file
+" rebuild the tag file in the directory of the current .c and .h file
+nmap <leader>t :!(cd %:p:h;ctags *.[ch])&<CR>
+" build tags of my own cpp project 
+nmap <leader>c :!ctags -R --sort=yes --c++-kinds=+pl --fields=+iaS --extra=+q .<CR>
+
 set tags=./tags,tags					" set the sequence of what tags file to use
 set cscopequickfix=s-,c-,d-,i-,t-,e-	" show the Cscope result into the quickfix window
 
@@ -66,11 +70,11 @@ map <C-J> <C-W>j<C-W>_		" maximize the down, up, left or right window
 map <C-K> <C-W>k<C-W>_
 map <C-H> <C-W>h<C-W><bar>
 map <C-L> <C-W>l<C-W><bar>
-map ,h <C-W>h				" move to the left, right, up or down window
-map ,l <C-W>l
-map ,k <C-W>k
-map ,j <C-W>j
-map ,w <C-W><C-W>			" ,w toggle between vertical or horizonal windows
+map <leader>h <C-W>h				" move to the left, right, up or down window
+map <leader>l <C-W>l
+map <leader>k <C-W>k
+map <leader>j <C-W>j
+map <leader>w <C-W><C-W>			" ,w toggle between vertical or horizonal windows
 
 " tab
 map <C-t><C-t> :tabnew<CR>
@@ -111,7 +115,7 @@ let Tlist_WinWidth = 25
 nnoremap <silent> <F8> :Tlist<CR>
 
 " NERD_tree.vim 
-nmap <leader>t :NERDTreeToggle<CR>	" key binding ,t for NERD Tree toggle
+nmap <leader>n :NERDTreeToggle<CR>	" key binding ,t for NERD Tree toggle
 
 " The following is from Vgod's
 " vim-latex - many latex shortcuts and snippets {
@@ -143,6 +147,21 @@ endif
 
 " SuperTab
 let g:SuperTabDefaultCompletionType = "context"
+
+"OmniCppComplete
+set tags+=~/.vim/tags/cpp_stl3.3.tags
+
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+set completeopt=menuone,menu,longest,preview
 
 
 "
