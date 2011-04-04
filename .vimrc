@@ -353,6 +353,16 @@ fun! Big5()
 	set fileencoding=big5
 endfun
 
+if has("gui_running")	" GUI color and font settings
+  set guifont=Osaka-Mono:h20
+  set background=dark 
+  set t_Co=256          " 256 color mode
+  set cursorline        " highlight current line
+  colors moria
+else
+" terminal color settings
+  colors vgod
+endif
 
 " Bash like keys for the command line
 "cnoremap <C-A>      <Home>
