@@ -58,7 +58,7 @@ command! -nargs=* Find :call Find(<f-args>)
 " rebuild the tag file in the directory of the current .c and .h file
 nmap <leader>t :!(cd %:p:h;ctags *.[ch])&<CR>
 " build tags of my own cpp project 
-nmap <leader>c :!ctags -R --sort=yes --c++-kinds=+pl --fields=+iaS --extra=+q .<CR>
+nmap <C-F12> :!ctags -R --sort=yes --c++-kinds=+pl --fields=+iaS --extra=+q .<CR>
 
 set tags=./tags,tags					" set the sequence of what tags file to use
 set cscopequickfix=s-,c-,d-,i-,t-,e-	" show the Cscope result into the quickfix window
@@ -132,18 +132,19 @@ let g:tex_flavor='latex'
 
 " AutoClose - Inserts matching bracket, paren, brace or quote 
 " fixed the arrow key problems caused by AutoClose
-if !has("gui_running")	
-   set term=linux
-   imap OA <ESC>ki
-   imap OB <ESC>ji
-   imap OC <ESC>li
-   imap OD <ESC>hi
+"if !has("gui_running")	
+"   set term=linux
+   imap [A <ESC>ki
+   imap [B <ESC>ji
+   imap [C <ESC>li
+   imap [D <ESC>hi
 
-   nmap OA k
-   nmap OB j
-   nmap OC l
-   nmap OD h
-endif
+   nmap [A k
+   nmap [B j
+   nmap [C l
+   nmap [D h
+"endif
+
 
 " SuperTab
 let g:SuperTabDefaultCompletionType = "context"
