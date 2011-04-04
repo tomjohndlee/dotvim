@@ -1,2 +1,8 @@
 Installation:
 	git clone https://github.com/tomjohndlee/dotvim.git ~/.vim
+
+vim-latex:
+	the vim-latex submodule is not where the plugin is in
+	the work around is under bundle/
+	ln -s vim-latex/vimfiles vim-latex-vimfiles
+	the .gitignore file will ignore this symbolic link
