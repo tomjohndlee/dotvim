@@ -37,7 +37,6 @@ autocmd! bufwritepost .vimrc source ~/.vimrc " auto reload vimrc when editing it
 " Section: Key Mapping
 "
 map! ii <esc>							" map ii to Esc
-map <F6> :let &hlsearch=!&hlsearch<CR>	" Turn hlsearch on or off by <F6>
 map ,e :update<CR>:e#<CR>               " toggle between % and # files, update only save when buffer changes
 
 " set ctrl+s to save file
@@ -103,7 +102,7 @@ map <leader>g :call IncludeGuard()<CR>
 " Section: Plugin Setting
 "
 " YankRing.vim - display a buffer displaying the yankring's contents
-nnoremap <silent> <F4> :YRShow<CR>
+"nnoremap <silent> <F4> :YRShow<CR>
 
 " NERD_commenter.vim (change the <leader> from default \ to ,)
 
