@@ -132,7 +132,7 @@ let g:tex_flavor='latex'
 
 " AutoClose - Inserts matching bracket, paren, brace or quote 
 " fixed the arrow key problems caused by AutoClose
-"if !has("gui_running")	
+if !has("gui_running")	
 "   set term=linux
    imap [A <ESC>ki
    imap [B <ESC>ji
@@ -143,7 +143,7 @@ let g:tex_flavor='latex'
    nmap [B j
    nmap [C l
    nmap [D h
-"endif
+endif
 
 
 " SuperTab
@@ -373,11 +373,13 @@ fun! Big5()
 endfun
 
 if has("gui_running")	" GUI color and font settings
-  set guifont=Osaka-Mono:h20
-  set background=dark 
-  set t_Co=256          " 256 color mode
+"  set guifont=Osaka-Mono:h20
+"  set guifont=Consolas:h14
+  set guifont=Courier:h14
+"  set background=dark 
+"  set t_Co=256          " 256 color mode
   set cursorline        " highlight current line
-  colors moria
+"  colors moria
 else
 " terminal color settings
   colors vgod
