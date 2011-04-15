@@ -99,7 +99,7 @@ map <leader>[ :cp<CR>		" move to the prev error
 map <C-[> <ESC>:po<CR>
 
 " ,g generates the header guard
-map <leader>g :call IncludeGuard()<CR>
+map /g :call IncludeGuard()<CR>
 
 
 "
