@@ -91,9 +91,9 @@ vnoremap < <gv
 vnoremap > >gv
 
 " open Quickfix console
-map <leader>cc :botright copen<CR> 
-map <leader>] :cn<CR>		" move to next error
-map <leader>[ :cp<CR>		" move to the prev error
+map \cc :botright copen<CR> 
+map \] :cn<CR>		" move to next error
+map \[ :cp<CR>		" move to the prev error
 
 " Ctrl-[ jump out of the tag stack (undo Ctrl-])
 map <C-[> <ESC>:po<CR>
