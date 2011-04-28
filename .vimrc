@@ -96,7 +96,7 @@ map \] :cn<CR>		" move to next error
 map \[ :cp<CR>		" move to the prev error
 
 " Ctrl-[ jump out of the tag stack (undo Ctrl-])
-map <C-[> <ESC>:po<CR>
+"map <C-[> <ESC>:po<CR>
 
 " ,g generates the header guard
 map /g :call IncludeGuard()<CR>
@@ -127,6 +127,7 @@ set grepprg=grep\ -nH\ $*
 " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
+let g:Tex_CompileRule_dvi = 'latex --interaction=nonstopmode -file-line-error-style $*'
 
 "}
 
