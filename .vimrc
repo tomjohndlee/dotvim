@@ -127,7 +127,12 @@ set grepprg=grep\ -nH\ $*
 " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
+" have to set -file-line-error-style flag to let compiled error in quickfix work
 let g:Tex_CompileRule_dvi = 'latex --interaction=nonstopmode -file-line-error-style $*'
+" vim has to be compiled as python supported, or Compilation functions such as (\ref, \cite)
+" can only open quickfix and preview windows which are not usual,
+" because texviewer.vim invokes outline.py to present citiation layout
+"let g:Tex_UsePython=0 " set this to test
 
 "}
 
