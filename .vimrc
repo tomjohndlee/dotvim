@@ -56,9 +56,9 @@ command! -nargs=* Find :call Find(<f-args>)
 
 " ctags
 " rebuild the tag file in the directory of the current .c and .h file
-nmap <leader>t :!(cd %:p:h;ctags *.[ch])&<CR>
+nmap ,t :!(cd %:p:h;ctags *.[ch])&<CR>
 " build tags of my own cpp project 
-nmap <C-F12> :!ctags -R --sort=yes --c++-kinds=+pl --fields=+iaS --extra=+q .<CR>
+nmap \t :!ctags -R --sort=yes --c++-kinds=+pl --fields=+iaS --extra=+q .<CR>
 
 set tags=./tags,tags					" set the sequence of what tags file to use
 set cscopequickfix=s-,c-,d-,i-,t-,e-	" show the Cscope result into the quickfix window
