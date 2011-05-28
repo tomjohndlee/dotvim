@@ -98,8 +98,8 @@ map \[ :cp<CR>		" move to the prev error
 " Ctrl-[ jump out of the tag stack (undo Ctrl-])
 "map <C-[> <ESC>:po<CR>
 
-" ,g generates the header guard
-map /g :call IncludeGuard()<CR>
+" \g generates the header guard
+map \g :call IncludeGuard()<CR>
 
 
 "
