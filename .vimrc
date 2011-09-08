@@ -91,7 +91,8 @@ vnoremap < <gv
 vnoremap > >gv
 
 " open Quickfix console
-map \cc :botright copen<CR> 
+map \cc :cclose<CR>          " ,cc to close Quickfix windows
+map \co :botright copen<CR>  " ,co to open Quickfix windows
 map \] :cn<CR>		" move to next error
 map \[ :cp<CR>		" move to the prev error
 
