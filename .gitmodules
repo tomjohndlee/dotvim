@@ -46,3 +46,6 @@
 [submodule "bundle/supertab"]
 	path = bundle/supertab
 	url = https://github.com/ervandew/supertab.git
+[submodule "bundle/cuteErrorMarker"]
+	path = bundle/cuteErrorMarker
+	url = https://github.com/Twinside/vim-cuteErrorMarker.git
