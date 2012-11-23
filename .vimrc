@@ -5,9 +5,9 @@ call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
 
-"
-" Section: VIM Settings
-"
+"--------------------------------------------------------------------------
+" Section: General Settings
+"--------------------------------------------------------------------------
 set nobackup
 set nocompatible		" use VIM not vi setting
 set autoindent			" always set autoindenting on
@@ -26,18 +26,22 @@ set ignorecase			" ignore case when searching
 set smartcase			" ignore case if search pattern is all lowercase,case-sensitive otherwise
 set backspace=indent,eol,start " fix backspace key won't move from current line
 
-let mapleader = ","		"set leader to , instead of default \
-let g:mapleader = "," 
-
 filetype plugin indent on  " enable filetype-specific detection, indenting, and plugins
 autocmd! bufwritepost .vimrc source ~/.vimrc " auto reload vimrc when editing it
 
 
-"
+"--------------------------------------------------------------------------
 " Section: Key Mapping
-"
-map! ii <esc>							" map ii to Esc
-map <leader>e :update<CR>:e#<CR>               " toggle between % and # files, update only save when buffer changes
+"--------------------------------------------------------------------------
+
+"set leader to , instead of default \
+let mapleader = ","		
+let g:mapleader = "," 
+
+" map ii to Esc
+map! ii <esc>
+" toggle between % and # files, update only save when buffer changes
+map <leader>e :update<CR>:e#<CR>
 
 " set ctrl+s to save file
 " ctrl+s, and ctrl+q are flow-control characters, 
@@ -56,7 +60,7 @@ command! -nargs=* Find :call Find(<f-args>)
 
 " ctags
 " rebuild the tag file in the directory of the current .c and .h file
-nmap ,t :!(cd %:p:h;ctags *.[ch])&<CR>
+nmap <leader>t :!(cd %:p:h;ctags *.[ch])&<CR>
 " build tags of my own cpp project 
 nmap \t :!ctags -R --sort=yes --c++-kinds=+pl --fields=+iaS --extra=+q .<CR>
 
@@ -91,10 +95,10 @@ vnoremap < <gv
 vnoremap > >gv
 
 " open Quickfix console
-map \cc :cclose<CR>          " ,cc to close Quickfix windows
-map \co :botright copen<CR>  " ,co to open Quickfix windows
-map \] :cn<CR>		" move to next error
-map \[ :cp<CR>		" move to the prev error
+map <leader>cc :cclose<CR>          " ,cc to close Quickfix windows
+map <leader>co :botright copen<CR>  " ,co to open Quickfix windows
+map <leader>] :cn<CR>		" move to next error
+map <leader>[ :cp<CR>		" move to the prev error
 
 " compile current file and run the generated ./a.out
 map <leader>ll :!gcc %<CR>
@@ -107,13 +111,9 @@ map <leader>xx  :!./a.out<CR>
 map \g :call IncludeGuard()<CR>
 
 
-"
+"--------------------------------------------------------------------------
 " Section: Plugin Setting
-"
-" YankRing.vim - display a buffer displaying the yankring's contents
-"nnoremap <silent> <F4> :YRShow<CR>
-
-" NERD_commenter.vim (change the <leader> from default \ to ,)
+"--------------------------------------------------------------------------
 
 " taglist.vim
 let Tlist_WinWidth = 25
@@ -178,13 +178,13 @@ au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
 
 
-"
+
+"--------------------------------------------------------------------------
 " Section: File Syntax
-"
+"--------------------------------------------------------------------------
+
 syntax on
 au BufRead,BufNewFile *.pc set filetype=c	" *.pc file use c syntax file
-
-
 "
 " Section: Spell Check Setting (after vim 7.0, spell check is build-in feature)
 "
@@ -199,9 +199,11 @@ highlight clear SpellLocal
 highlight SpellLocal term=underline cterm=underline
 
 
-"
+
+"--------------------------------------------------------------------------
 " Section: Functions
-"
+"--------------------------------------------------------------------------
+
 " Usage: :Grep [pattern], use grep search recursively and execlude .svn
 function! Grep(name)
 	let cmd_output = system("grep -nIR '".a:name."' * | grep -v .svn")
@@ -262,9 +264,7 @@ function! Find(...)
   endif
 endfunction
 
-"--------------------------------------------------------------------------- 
 " Tip #382: Search for <cword> and replace with input() in all open buffers 
-"--------------------------------------------------------------------------- 
 fun! Replace() 
     let s:word = input("Replace " . expand('<cword>') . " with:") 
     :exe 'bufdo! %s/\<' . expand('<cword>') . '\>/' . s:word . '/ge' 
@@ -280,9 +280,11 @@ fun! IncludeGuard()
 endfun
 
 
-"
+
+"--------------------------------------------------------------------------
 " Section: Tab Setting
-"
+"--------------------------------------------------------------------------
+
 " Cause the program to indent to 4 spaces but actually is ^I,tab.
 " cindent will see tabstop value, so I have to set it to 4
 " be careful when you press <tab> it will insert 2 ^I, so you have to use
@@ -301,9 +303,11 @@ set shiftwidth=4
 au FileType make setlocal noexpandtab
 
 
-"
+
+"--------------------------------------------------------------------------
 " Section: Vgod's settings
-"
+"--------------------------------------------------------------------------
+
 set clipboard=unnamed	" yank to the system register (*) by default
 set showmatch			" Cursor shows matching ) and }
 set showmode			" Show current mode
@@ -360,9 +364,11 @@ endif
 autocmd BufNewFile,BufRead *.scss             set ft=scss.css
 autocmd BufNewFile,BufRead *.sass             set ft=sass.css
 
-"--------------------------------------------------------------------------- 
-" ENCODING SETTINGS
-"--------------------------------------------------------------------------- 
+
+"--------------------------------------------------------------------------
+" Section: ENCODING SETTINGS
+"--------------------------------------------------------------------------
+
 set encoding=utf-8                                  
 set termencoding=utf-8
 set fileencoding=utf-8
@@ -398,38 +404,13 @@ else
   colors vgod
 endif
 
-" Bash like keys for the command line
-"cnoremap <C-A>      <Home>
-"cnoremap <C-E>      <End>
-"cnoremap <C-K>      <C-U>
-
-" :cd. change working directory to that of the current file
-"cmap cd. lcd %:p:h
-
-" Writing Restructured Text (Sphinx Documentation) {
-   " Ctrl-u 1:    underline Parts w/ #'s
-"   noremap  <C-u>1 yyPVr#yyjp
-"   inoremap <C-u>1 <esc>yyPVr#yyjpA
-   " Ctrl-u 2:    underline Chapters w/ *'s
-"   noremap  <C-u>2 yyPVr*yyjp
-"   inoremap <C-u>2 <esc>yyPVr*yyjpA
-   " Ctrl-u 3:    underline Section Level 1 w/ ='s
-"   noremap  <C-u>3 yypVr=
-"   inoremap <C-u>3 <esc>yypVr=A
-   " Ctrl-u 4:    underline Section Level 2 w/ -'s
-"   noremap  <C-u>4 yypVr-
-"   inoremap <C-u>4 <esc>yypVr-A
-   " Ctrl-u 5:    underline Section Level 3 w/ ^'s
-"   noremap  <C-u>5 yypVr^
-"   inoremap <C-u>5 <esc>yypVr^A
-"}
-" C/C++ specific settings
-"autocmd FileType c,cpp,cc  set cindent comments=sr:/*,mb:*,el:*/,:// cino=>s,e0,n0,f0,{0,}0,^-1s,:0,=s,g0,h1s,p2,t0,+2,(2,)20,*30
 
 
-"
+
+"--------------------------------------------------------------------------
 " Section: Memo
-"
+"--------------------------------------------------------------------------
+
 " 1. Use 'set list' to show the hidden character.<Tab>=^I, '\n'=$.
 "
 " 2. Use 'set tabstop=3' will let the <Tab> trasfer to 3 spaces when we look 
@@ -448,9 +429,11 @@ endif
 "    You can find some reference in Tip#12 in www.vim.org
 
 
-"
+
+"--------------------------------------------------------------------------
 " Section: Backup
-"
+"--------------------------------------------------------------------------
+
 "map _p :Ide print <C-R>=expand("<cword>")<CR><CR>
 "map _b :exe 'Ide break ' .expand("%:t"). ':' .line(".")<CR>
 "map _u :exe 'Ide until ' .expand("%:t"). ':' .line(".")<CR>
@@ -480,4 +463,32 @@ endif
       "\         exe "normal g'\"" |
       "\     endif |
       "\ endif
+
+" Bash like keys for the command line
+"cnoremap <C-A>      <Home>
+"cnoremap <C-E>      <End>
+"cnoremap <C-K>      <C-U>
+
+" :cd. change working directory to that of the current file
+"cmap cd. lcd %:p:h
+
+" Writing Restructured Text (Sphinx Documentation) {
+   " Ctrl-u 1:    underline Parts w/ #'s
+"   noremap  <C-u>1 yyPVr#yyjp
+"   inoremap <C-u>1 <esc>yyPVr#yyjpA
+   " Ctrl-u 2:    underline Chapters w/ *'s
+"   noremap  <C-u>2 yyPVr*yyjp
+"   inoremap <C-u>2 <esc>yyPVr*yyjpA
+   " Ctrl-u 3:    underline Section Level 1 w/ ='s
+"   noremap  <C-u>3 yypVr=
+"   inoremap <C-u>3 <esc>yypVr=A
+   " Ctrl-u 4:    underline Section Level 2 w/ -'s
+"   noremap  <C-u>4 yypVr-
+"   inoremap <C-u>4 <esc>yypVr-A
+   " Ctrl-u 5:    underline Section Level 3 w/ ^'s
+"   noremap  <C-u>5 yypVr^
+"   inoremap <C-u>5 <esc>yypVr^A
+"}
+" C/C++ specific settings
+"autocmd FileType c,cpp,cc  set cindent comments=sr:/*,mb:*,el:*/,:// cino=>s,e0,n0,f0,{0,}0,^-1s,:0,=s,g0,h1s,p2,t0,+2,(2,)20,*30
 
