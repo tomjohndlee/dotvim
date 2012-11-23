@@ -19,9 +19,6 @@
 [submodule "bundle/xmledit"]
 	path = bundle/xmledit
 	url = https://github.com/sukima/xmledit.git
-[submodule "bundle/yankring"]
-	path = bundle/yankring
-	url = https://github.com/vim-scripts/YankRing.vim.git
 [submodule "bundle/autoclose"]
 	path = bundle/autoclose
 	url = https://github.com/Townk/vim-autoclose.git
