@@ -96,6 +96,10 @@ map \co :botright copen<CR>  " ,co to open Quickfix windows
 map \] :cn<CR>		" move to next error
 map \[ :cp<CR>		" move to the prev error
 
+" compile current file and run the generated ./a.out
+map <leader>ll :!gcc %<CR>
+map <leader>xx  :!./a.out<CR>
+
 " Ctrl-[ jump out of the tag stack (undo Ctrl-])
 "map <C-[> <ESC>:po<CR>
 
@@ -117,6 +121,8 @@ nnoremap <silent> <F8> :Tlist<CR>
 
 " NERD_tree.vim 
 nmap <leader>n :NERDTreeToggle<CR>	" key binding ,t for NERD Tree toggle
+
+let g:Tex_DefaultTargetFormat='pdf'
 
 " The following is from Vgod's
 " vim-latex - many latex shortcuts and snippets {
