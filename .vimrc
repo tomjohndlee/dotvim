@@ -178,6 +178,17 @@ au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
 
 
+" TagBar
+" toggle TagBar with F7
+nnoremap <silent> <F7> :TagbarToggle<CR> 
+" set focus to TagBar when opening it
+let g:tagbar_autofocus = 1
+
+" SuperTab
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
+
 
 "--------------------------------------------------------------------------
 " Section: File Syntax
